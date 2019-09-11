@@ -1,10 +1,14 @@
 # need to install HMDLexis
 library(devtools)
+setwd("C:/Proyectos/ArgHMD")
 options(max.print = 6000)
-setwd("C:/Users/User/Desktop/HMD_Arg")
-load_all("HMDLexis")
 
-# Use Official estimates instead of census (test)
+#load lexis tools
+load_all("C:/Users/User/Desktop/HMD_Arg/HMDLexis")
+
+# -----------------------------------------------------------------------
+# Use Official estimates instead of census?
+#------------------------------------------------------------------------
 C_or_O_or_E = "O"
 obj <- read.table("ARG/InputDB/ARGpop.txt", 
                   sep = ",", 
@@ -15,7 +19,6 @@ obj <- read.table("ARG/InputDB/ARGpop.txt",
 obj$LDB <- 0
 obj$LDB[obj$Type == C_or_O_or_E] <- 1
 obj[is.na(obj)] <- "."
-
 write.table(obj, 
             file = "ARG/InputDB/ARGpop.txt", 
             sep = ",", 
@@ -39,11 +42,15 @@ Tadj    <- ARG$Tadj
 # sum-in late registered events (group by Year, forget YearReg). Can be considered a pre-processing step
 Deaths <- d_agg(Deaths)
 Deaths <- d_unk(Deaths) 
-Deaths <- d_soainew(Deaths)
-Deaths <- d_long(Deaths)
-# the way we declare projection through year t (generating pop estimate for jan 1 in t+1)
-# is by cutting down deaths
+Deaths <- d_soainew(Deaths) # Kannisto extension of oai
+Deaths <- d_long(Deaths) # Lexis Tr in oai extended
+# the way we declare projection through year t (generating pop estimate for jan 1 in t+1) is by cutting down deaths
 Deaths  <- subset(Deaths, Year <= 2013)
+
+# graph Logic -> 
+Deaths_T = melt(xtabs(Deaths~Year+Agei, Deaths, Agei %in% 105:115)>0)
+ggplot(Deaths_T, aes(x = Year, y = Agei, fill = value)) + geom_tile() +
+  scale_fill_manual(values = c("white", "black")) + theme_bw()
 
 # ----------------------------------------------------------------------
 # Steps to get Pop (recomendeds by Tim)
