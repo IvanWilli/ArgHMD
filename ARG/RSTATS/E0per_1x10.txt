@@ -1,0 +1,6 @@
+ARG, Life expectancy at birth (period, 1x10)	Last modified: 04 ago. 2019; MPv5 (May07)
+
+  Year       Female    Male     Total
+1990-1999     77.09    69.59    73.29
+2000-2009     78.43    71.33    74.89
+2010-2013     78.98    72.42    75.74
