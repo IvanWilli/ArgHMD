@@ -1,5 +1,6 @@
 # need to install HMDLexis
 library(devtools)
+library(ggplot2)
 setwd("C:/Proyectos/ArgHMD")
 options(max.print = 6000)
 
@@ -10,7 +11,7 @@ load_all("C:/Users/User/Desktop/HMD_Arg/HMDLexis")
 # Use Official estimates instead of census?
 #------------------------------------------------------------------------
 C_or_O_or_E = "O"
-obj <- read.table("ARG/InputDB/ARGpop.txt", 
+obj <- read.table("ARG/InputDB/ARGpop - Raw.txt", 
                   sep = ",", 
                   na.strings = ".", 
                   header = TRUE, 
