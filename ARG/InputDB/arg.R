@@ -48,17 +48,12 @@ Deaths <- d_long(Deaths) # Lexis Tr in oai extended
 # the way we declare projection through year t (generating pop estimate for jan 1 in t+1) is by cutting down deaths
 Deaths  <- subset(Deaths, Year <= 2013)
 
-# graph Logic -> 
-Deaths_T = melt(xtabs(Deaths~Year+Agei, Deaths, Agei %in% 105:115)>0)
-ggplot(Deaths_T, aes(x = Year, y = Agei, fill = value)) + geom_tile() +
-  scale_fill_manual(values = c("white", "black")) + theme_bw()
+# D distribution
+round(xtabs(Deaths~Year+Agei, Deaths, Agei %in% 105:115),1)
 
 # ----------------------------------------------------------------------
 # Steps to get Pop (recomendeds by Tim)
 # ----------------------------------------------------------------------
-# some first visualization of 2010
-plot(Pop[Pop$Year==2010 & Pop$Sex=="m", c("Age", "Population")], t="l")
-
 # 1) make sure p_soai is done on year 2010 census (if necessary)
 # extend open ages prior to IC to be able to fill in up to ca age 80
 # since p_soai() needs deaths 10 years to the left, we remove and then
@@ -73,7 +68,9 @@ plot(Pop[Pop$Year==2010 & Pop$Sex=="m", c("Age", "Population")], t="l", xlim=c(7
 Pop2001 <- p_split(Pop = subset(Pop, Year>1995), Deaths = Deaths, Births = Births) 
 
 # mmm! Big problem in 79/80
-plot(Pop2001[Pop2001$Year==2001 & Pop2001$Sex=="m", c("Age", "Population")], t="l")
+plot(Pop[Pop$Year==2010 & Pop$Sex=="m", c("Age", "Population")], t="l")
+lines(Pop2001[Pop2001$Year==2001 & Pop2001$Sex=="m", c("Age", "Population")], t="l", col=2)
+legend("topright",legend = c(2010,2001),col=1:2, lty=1)
 
 # 3) p_soai() on 2000 official (make sure 79-80 join was good first)
 # 4) p_split() to 1990
